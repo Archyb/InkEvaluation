@@ -46,8 +46,9 @@ const PasswordMain = ({
     }
 
     async function handleSelectPassword(id: string) {
+            if(selectedPasswordId == id) setSelectedPasswordId(null)
+            else setSelectedPasswordId(id);
 
-        setSelectedPasswordId(id);
     }
 
     function handleDelete(id: string) {
@@ -95,6 +96,7 @@ const PasswordMain = ({
                         passwords={decryptedPasswords}
                         editing={editing}
                         onSelectPassword={handleSelectPassword}
+                        selectPassword={selectedPasswordId}
                     />
                 ) : (
                     <NoPasswords />

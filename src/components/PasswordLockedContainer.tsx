@@ -29,12 +29,12 @@ const PasswordLockedContainer = ({ onSuccess,isAuth }: Props) => {
             const key = await getKey(derivation);
             await wait(500);
             await decrypt(key, encryptedValidation);
-            const b = await isMasterPasswordValid(password);
-            console.log(b)
-            if (!b) {
+            const authenticated = await isMasterPasswordValid(password);
+            console.log(authenticated)
+            if (!authenticated) {
                 throw new Error('Invalid password');
             }
-            storage.setItem("isAuth", "true");
+            storage.setItem("isAuth", "true")
             isAuth((current:boolean) => current= true)
             storage.setItem(CRYPTO_KEY_STORAGE_KEY, arrayBufferToBase64(derivation));
         };

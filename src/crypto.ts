@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import {encryptedValidation, MASTERPASSWORD} from "./constants";
+import { MASTERPASSWORD} from "./constants";
 
 const IV = 16;
 const ALGORITHM = 'AES-GCM';

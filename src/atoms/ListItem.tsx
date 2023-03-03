@@ -6,9 +6,10 @@ import classes from './ListItem.module.css';
 interface Props extends React.ComponentPropsWithoutRef<'li'> {
     clickable?: boolean;
     dense?: boolean;
+    isActive?: boolean;
 }
 
-function ListItem({ className, clickable, dense, onClick, ...rest }: Props) {
+function ListItem({ className, clickable, dense, onClick, isActive, ...rest }: Props) {
     const rootClassName = clsx(className, classes.root, {
         [classes.clickable]: clickable,
         [classes.dense]: dense,
@@ -17,16 +18,15 @@ function ListItem({ className, clickable, dense, onClick, ...rest }: Props) {
     function handleClick(e: React.MouseEvent<HTMLLIElement, MouseEvent>) {
         onClick && onClick(e);
 
-        const { currentTarget: node } = e;
-
+        /*const { currentTarget: node } = e;
         if (node.classList.contains(classes.selected)) {
             node.classList.remove(classes.selected);
         } else {
             node.classList.add(classes.selected);
-        }
+        }*/
     }
 
-    return <li className={rootClassName} onClick={handleClick} {...rest} />;
+    return <li className={`${rootClassName} ${isActive ? classes.selected : ""}`} onClick={handleClick} {...rest} />;
 }
 
 export default ListItem;
