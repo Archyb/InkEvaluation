@@ -73,17 +73,6 @@ function PasswordEdit({password, onSave, onDelete, onCancel}) {
         setUrlInput('');
     }
 
-
-    // const handleUrlDelete = useCallback(
-    //     (index) => () => {
-    //         const urls = values.url || [];
-    //
-    //         //urls.splice(index, 1);
-    //         urls.remove(index)
-    //         change({url: urls});
-    //     },
-    //     [values.url]
-    // );
     const handleUrlDelete = (index) => {
         const urls = values.url || []
         urls.splice(index, 1);

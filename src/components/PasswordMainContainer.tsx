@@ -65,6 +65,8 @@ const PasswordMain = ({
     }
 
     function handleSave(password: Password) {
+        //check if on of password items is empty
+        if (password.name === '' || password.value === '') {return alert('Please fill all fields')}
         onPasswordEdited(password);
         setEditing(false);
         setSelectedPasswordId(password.id);
