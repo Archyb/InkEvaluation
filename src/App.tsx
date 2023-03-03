@@ -19,6 +19,9 @@ function duplicateUrlsAmongPasswords(passwords: { [id: string]: Password }) {
             checkSet.add(password.url[i])
         }
     })
+    //get keys from duplicate urls
+    const duplicateUrls = urls.filter((item, index) => urls.indexOf(item) !== index)
+    console.log(duplicateUrls)
     return urls.length !== checkSet.size;
 }
 
@@ -70,7 +73,7 @@ function App() {
         });
     }, []);
     useEffect(() => {
-        console.log("isAuth")}, [isAuth]);
+        console.log("isAuth")}, [setIsAuth]);
     useEffect(() => {
         async function sync() {
             if (!key) {
@@ -88,6 +91,7 @@ function App() {
         storage.removeItem(CRYPTO_KEY_STORAGE_KEY);
         setKey(null);
         setIsAuth(false);
+        storage.setItem("isAuth", "false")
     }
 
     function handlePasswordCreated(password: Password) {
@@ -128,7 +132,16 @@ function App() {
     }
 
 
-    if (!isAuth) {
+    const authorized = ()=>{
+        if (isAuth) return true;
+        if (storage.getItem("isAuth") === 'true') {
+            setIsAuth(true);
+            return true;
+        }
+        return false;
+    };
+    const Authentication=authorized()
+    if (!Authentication) {
         return <PasswordLockedContainer isAuth={setIsAuth} onSuccess={handleSuccess}></PasswordLockedContainer>;
 }
     return (

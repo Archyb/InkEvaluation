@@ -92,8 +92,8 @@ function PasswordEdit({password, onSave, onDelete, onCancel}) {
     }
 
     useEffect(() => {
-        console.log(values)
-    }, [urlHasChanged, values])
+
+    }, [urlHasChanged])
     return (
         <div className={classes.container}>
             <h2 className={classes.title}>

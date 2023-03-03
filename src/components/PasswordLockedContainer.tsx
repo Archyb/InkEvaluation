@@ -34,6 +34,7 @@ const PasswordLockedContainer = ({ onSuccess,isAuth }: Props) => {
             if (!b) {
                 throw new Error('Invalid password');
             }
+            storage.setItem("isAuth", "true");
             isAuth((current:boolean) => current= true)
             storage.setItem(CRYPTO_KEY_STORAGE_KEY, arrayBufferToBase64(derivation));
         };
