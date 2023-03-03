@@ -32,7 +32,8 @@ function Passwords({ editing, passwords, onSelectPassword }: Props) {
     return (
         <List className={clsx(classes.passwords, { [classes.disabled]: editing })}>
 
-            {Object.values(passwords).map(renderListItem)}
+            {Object.values(passwords).map(renderListItem)
+            }
         </List>
     );
 }

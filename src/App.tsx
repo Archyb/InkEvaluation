@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 
-import { Password } from './models';
+import {Password} from './models';
 import * as storage from './storage';
-import { encrypt, decrypt, getKey, base64StringToUint8Array } from './crypto';
-import { wait } from './helpers';
-import { CRYPTO_KEY_STORAGE_KEY, PASSWORDS_STORAGE_KEY } from './constants';
+import {encrypt, decrypt, getKey, base64StringToUint8Array} from './crypto';
+import {wait} from './helpers';
+import {CRYPTO_KEY_STORAGE_KEY, PASSWORDS_STORAGE_KEY} from './constants';
 import PasswordLockedContainer from './components/PasswordLockedContainer';
 import PasswordMainContainer from './components/PasswordMainContainer';
 
 function duplicateUrlsAmongPasswords(passwords: { [id: string]: Password }) {
+    const urls= Object.keys(passwords).map((key,value)=>{
+        for (let i=0; i<passwords[key].url.length; i++) {}
+
+     //   {key:passwords[key].id,urls:passwords[key].url};
+    })
+
+
     return null;
 }
 
@@ -99,6 +106,7 @@ function App() {
              * if there are duplicate urls among the passwords alert a message such as
              * 'Duplicate url "https://foobar.com" found for passwords "foo", "bar", "baz"'
              */
+            console.warn("duplicate urls found");
         }
 
         setDecryptedPasswords(nextPasswords);
@@ -106,7 +114,7 @@ function App() {
 
     function handlePasswordDeleted(id: string) {
         setDecryptedPasswords((passwords) => {
-            const { [id]: deleted, ...remaining } = passwords;
+            const {[id]: deleted, ...remaining} = passwords;
 
             return remaining;
         });
@@ -117,7 +125,7 @@ function App() {
     }
 
     if (!key) {
-        return <PasswordLockedContainer onSuccess={handleSuccess} />;
+        return <PasswordLockedContainer onSuccess={handleSuccess}/>;
     }
 
     return (
