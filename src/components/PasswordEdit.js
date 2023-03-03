@@ -37,6 +37,7 @@ function PasswordEdit({password, onSave, onDelete, onCancel}) {
 
     const [urlInput, setUrlInput] = useState('');
     const [urlHasChanged, setUrlHasChanged] = useState(true)
+
     function change(partial) {
         setValues((values) => ({
             ...values,
@@ -65,29 +66,34 @@ function PasswordEdit({password, onSave, onDelete, onCancel}) {
 
     function handleUrlAdd() {
         const urls = values.url || [];
-
         urls.unshift(urlInput);
-        setUrlHasChanged((url)=>url=!url)
+        setUrlHasChanged((url) => url = !url)
         change({url: urls});
 
         setUrlInput('');
     }
 
 
-    const handleUrlDelete = useCallback(
-        (index) => () => {
-            const urls = values.url || [];
+    // const handleUrlDelete = useCallback(
+    //     (index) => () => {
+    //         const urls = values.url || [];
+    //
+    //         //urls.splice(index, 1);
+    //         urls.remove(index)
+    //         change({url: urls});
+    //     },
+    //     [values.url]
+    // );
+    const handleUrlDelete = (index) => {
+        const urls = values.url || []
+        urls.splice(index, 1);
+        change({url: urls});
+        setUrlHasChanged((url) => url =!url)
+    }
 
-            urls.splice(index, 1);
-
-            change({url: urls});
-        },
-        []
-    );
-    console.log(urlHasChanged)
-   useEffect(() => {
-       console.log(values)
-   }, [urlHasChanged,values])
+    useEffect(() => {
+        console.log(values)
+    }, [urlHasChanged, values])
     return (
         <div className={classes.container}>
             <h2 className={classes.title}>
@@ -119,7 +125,7 @@ function PasswordEdit({password, onSave, onDelete, onCancel}) {
                         <Button onClick={handleUrlAdd}>Add</Button>
                     </div>
 
-                    <UrlList urls={values.url} onDelete={handleUrlDelete} />
+                    <UrlList urls={values.url} onDelete={handleUrlDelete}/>
                 </Labelled>
             </div>
             <div className={classes.controls}>
