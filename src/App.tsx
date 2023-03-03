@@ -4,13 +4,12 @@ import {Password} from './models';
 import * as storage from './storage';
 import {encrypt, decrypt, getKey, base64StringToUint8Array} from './crypto';
 import {wait} from './helpers';
-import {CRYPTO_KEY_STORAGE_KEY, PASSWORDS_STORAGE_KEY} from './constants';
+import {CRYPTO_KEY_STORAGE_KEY, PASSWORDS_STORAGE_KEY,MASTERPASSWORD} from './constants';
 import PasswordLockedContainer from './components/PasswordLockedContainer';
 import PasswordMainContainer from './components/PasswordMainContainer';
 
 
 function duplicateUrlsAmongPasswords(passwords: { [id: string]: Password }) {
-    console.log(passwords)
     const urls:string[]=[]
     const checkSet = new Set();
     Object.entries(passwords).forEach(([id, password]) => {
@@ -25,12 +24,13 @@ function duplicateUrlsAmongPasswords(passwords: { [id: string]: Password }) {
 
 function App() {
     const [loading, setLoading] = useState(true);
-
+    const [isAuth, setIsAuth] = useState(false);
     const [key, setKey] = useState<CryptoKey | null>(null);
 
     const [decryptedPasswords, setDecryptedPasswords] = useState<{ [id: string]: Password }>({});
 
     async function hydratePasswords(newKey: CryptoKey) {
+        console.log(newKey)
         setKey(newKey);
         await wait(500);
         const encryptedPasswords = JSON.parse(storage.getItem(PASSWORDS_STORAGE_KEY));
@@ -42,6 +42,7 @@ function App() {
     }
 
     function handleSuccess(newKey: CryptoKey) {
+
         const run = async () => {
             try {
                 await hydratePasswords(newKey);
@@ -68,7 +69,8 @@ function App() {
             setLoading(false);
         });
     }, []);
-
+    useEffect(() => {
+        console.log("isAuth")}, [isAuth]);
     useEffect(() => {
         async function sync() {
             if (!key) {
@@ -85,6 +87,7 @@ function App() {
     function handleLogout() {
         storage.removeItem(CRYPTO_KEY_STORAGE_KEY);
         setKey(null);
+        setIsAuth(false);
     }
 
     function handlePasswordCreated(password: Password) {
@@ -124,10 +127,10 @@ function App() {
         return <>Loading</>;
     }
 
-    if (!key) {
-        return <PasswordLockedContainer onSuccess={handleSuccess}/>;
-    }
 
+    if (!isAuth) {
+        return <PasswordLockedContainer isAuth={setIsAuth} onSuccess={handleSuccess}></PasswordLockedContainer>;
+}
     return (
         <PasswordMainContainer
             decryptedPasswords={decryptedPasswords}

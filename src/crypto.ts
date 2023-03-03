@@ -1,4 +1,6 @@
 // eslint-disable-next-line
+import {encryptedValidation, MASTERPASSWORD} from "./constants";
+
 const IV = 16;
 const ALGORITHM = 'AES-GCM';
 
@@ -53,4 +55,9 @@ export function decrypt(key: CryptoKey, { iv, cipher }: { iv: string; cipher: st
 
 export async function getKey(rawKey: ArrayBuffer) {
     return window.crypto.subtle.importKey('raw', rawKey, ALGORITHM, false, ['encrypt', 'decrypt']);
+}
+
+export async function isMasterPasswordValid(password: string) {
+    //fetch master password from local storage?
+    return password === MASTERPASSWORD;
 }

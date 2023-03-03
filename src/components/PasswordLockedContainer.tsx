@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 import { CRYPTO_KEY_STORAGE_KEY, encryptedValidation } from '../constants';
 import { wait } from '../helpers';
-import { arrayBufferToBase64, decrypt, getDerivation, getKey } from '../crypto';
+import {arrayBufferToBase64, decrypt, getDerivation, getKey, isMasterPasswordValid} from '../crypto';
 import * as storage from '../storage';
 import classes from './PasswordLockedContainer.module.css';
 import Button from '../atoms/Button';
@@ -10,9 +10,10 @@ import Input from '../atoms/Input';
 
 interface Props {
     onSuccess: (password: CryptoKey) => void;
+    isAuth: (isAuth: (current: boolean) => boolean) => void ;
 }
 
-const PasswordLockedContainer = ({ onSuccess }: Props) => {
+const PasswordLockedContainer = ({ onSuccess,isAuth }: Props) => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -28,7 +29,12 @@ const PasswordLockedContainer = ({ onSuccess }: Props) => {
             const key = await getKey(derivation);
             await wait(500);
             await decrypt(key, encryptedValidation);
-            onSuccess(key);
+            const b = await isMasterPasswordValid(password);
+            console.log(b)
+            if (!b) {
+                throw new Error('Invalid password');
+            }
+            isAuth((current:boolean) => current= true)
             storage.setItem(CRYPTO_KEY_STORAGE_KEY, arrayBufferToBase64(derivation));
         };
 
@@ -39,7 +45,7 @@ const PasswordLockedContainer = ({ onSuccess }: Props) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
     };
-
+    useEffect(() => {}, [loading]);
     return (
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
