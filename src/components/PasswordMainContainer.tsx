@@ -67,6 +67,7 @@ const PasswordMain = ({
     function handleSave(password: Password) {
         onPasswordEdited(password);
         setEditing(false);
+        setSelectedPasswordId(password.id);
     }
 
     const amountOfVulnerablePasswords = Object.keys(decryptedPasswords).reduce<number>(

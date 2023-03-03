@@ -20,7 +20,7 @@ function Passwords({ editing, passwords, onSelectPassword }: Props) {
 
         return (
             <PasswordListItem
-                key={password.name}
+                key={password.id}
                 name={password.name}
                 disabled={editing}
                 onClick={handleClick}
@@ -31,6 +31,7 @@ function Passwords({ editing, passwords, onSelectPassword }: Props) {
 
     return (
         <List className={clsx(classes.passwords, { [classes.disabled]: editing })}>
+
             {Object.values(passwords).map(renderListItem)}
         </List>
     );
