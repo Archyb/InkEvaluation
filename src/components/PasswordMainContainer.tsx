@@ -13,7 +13,6 @@ import classes from './PasswordMainContainer.module.css';
 
 function createNewPassword() {
     const id = uniqid();
-
     return {
         id,
         value: '',
@@ -47,9 +46,6 @@ const PasswordMain = ({
     }
 
     async function handleSelectPassword(id: string) {
-        if(selectedPasswordId&&selectedPasswordId?.length>1){
-            console.log(selectedPasswordId)
-        }
 
         setSelectedPasswordId(id);
     }

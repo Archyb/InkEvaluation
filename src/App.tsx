@@ -8,15 +8,19 @@ import {CRYPTO_KEY_STORAGE_KEY, PASSWORDS_STORAGE_KEY} from './constants';
 import PasswordLockedContainer from './components/PasswordLockedContainer';
 import PasswordMainContainer from './components/PasswordMainContainer';
 
+
 function duplicateUrlsAmongPasswords(passwords: { [id: string]: Password }) {
-    const urls= Object.keys(passwords).map((key,value)=>{
-        for (let i=0; i<passwords[key].url.length; i++) {}
-
-     //   {key:passwords[key].id,urls:passwords[key].url};
+    console.log(passwords)
+    const urls:string[]=[]
+    const checkSet = new Set();
+    Object.entries(passwords).forEach(([id, password]) => {
+        console.log(password.url)
+        for (let i = 0; i <password.url.length; i++) {
+            urls.push(password.url[i])
+            checkSet.add(password.url[i])
+        }
     })
-
-
-    return null;
+    return urls.length !== checkSet.size;
 }
 
 function App() {
@@ -99,14 +103,10 @@ function App() {
             },
         };
 
-        const duplicateUrls = duplicateUrlsAmongPasswords(decryptedPasswords);
+        const duplicateUrls = duplicateUrlsAmongPasswords(nextPasswords);
 
         if (duplicateUrls) {
-            /*
-             * if there are duplicate urls among the passwords alert a message such as
-             * 'Duplicate url "https://foobar.com" found for passwords "foo", "bar", "baz"'
-             */
-            console.warn("duplicate urls found");
+            alert('Duplicate url found for passwords: you might have an outdated password ')
         }
 
         setDecryptedPasswords(nextPasswords);
